@@ -23,5 +23,11 @@ module ObserversTestApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    Dir.chdir("#{Rails.root}/app/observers") do
+      config.active_record.observers = Dir["*_observer.rb"].collect do |observer_name|
+        observer_name.split(".").first.to_sym if observer_name != "application_observer.rb"
+      end.compact
+    end
   end
 end
